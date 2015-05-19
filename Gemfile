@@ -48,3 +48,6 @@ gem "elasticsearch-persistence", require: 'elasticsearch/persistence/model'
 gem 'colorize' #颜色打印，目前只在rake任务中用到
 
 gem 'redis'
+
+gem 'sidekiq'
+gem 'sinatra'
