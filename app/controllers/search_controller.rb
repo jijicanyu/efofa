@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
   def index
-    @count = Subdomain.length
+    @count = Subdomain.es_length
   end
 
   def result

@@ -1,28 +1,43 @@
-== README
+# FOFA全网网站数据库
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+fofa是一个用于进行全网网站数据快速分析的平台。通过针对全球互联网网站进行信息收集汇总，可以进行很多研究工作，比如：针对目标企业的资产收集；全网CMS应用分情况统计；漏洞快速验证等等。如果您有更好的想法，请随时跟我们联系补充。
 
-Things you may want to cover:
+## 环境说明
+- Ruby版本 >= 2.0.x; Rails版本 >= 4.2.x
+- Elasticsearch版本 >= 1.5.x
+- Redis版本 >= 3.0.x
+- Unicorn >=4.2.x
 
-* Ruby version
+## 服务模块
+```
+                 +-----------------+                 
+      +--------->+  Elasticsearch  |                 
+      |          +-----------------+                 
+      |                                              
+      |                                 +-----------+
++-----+-----+      +-----------+        |  Sidekiq  |
+|  Unicorn  +------>  Sidekiq  <--------+  Workers  |
+|    WEB    |      +-----+-----+        +-----+-----+
++-----+-----+            |                    ^      
+      |                  |                    |      
+      v                  |                    |      
+ +----+----+        +----v----+               |      
+ |  Mysql  |        |  Redis  +---------------+      
+ +---------+        +---------+                      
 
-* System dependencies
 
-* Configuration
+```
 
-* Database creation
+## Rails配置
 
-* Database initialization
+### 数据库配置
+- **Mysql**：config/database.yml
+- **Redis**：config/database.yml
+- **Elasticsearch**：config/database.yml
 
-* How to run the test suite
+### 初始化配置
+- **Sidekiq**：config/initializers/sidekiq.rb
+- **Elasticsearch**：config/initializers/elasticsearch.rb
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+### Rake配置
+rake支持unicorn／redis／elasticsearch／mysql／sidekiq workers的启动和停止，也包括一些必要工具的调用。均放在lib/tasks目录下。
