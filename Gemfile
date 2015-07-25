@@ -52,7 +52,6 @@ gem 'redis'
 gem 'mysql2'
 gem 'sinatra'
 gem 'sidekiq'
-gem 'unicorn'
 
 gem 'domainatrix' #lrlink
 gem 'guess_html_encoding' #httpmodule
