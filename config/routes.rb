@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
   sidekiq_web_constraint = lambda { |request|
     #request.remote_ip == '127.0.0.1'
+    true
   }
   constraints sidekiq_web_constraint do
     require 'sidekiq/web'
