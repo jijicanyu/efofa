@@ -15,10 +15,10 @@ class HttpErrorWorker
   end
 
   def perform(host, domain, subdomain, http_info)
-    update_index(host, domain, subdomain, http_info)
+    http_error(host, domain, subdomain, http_info)
   end
 
-  def update_index(host, domain, subdomain, http_info)
+  def http_error(host, domain, subdomain, http_info)
     FofaDB.redis_inc_failed_host(host)
     #@webdb.insert_host_to_error_table(host, "#{Socket.gethostname} : http failed! #{http_info[:errstring]}") if http_info[:write_error]
   end

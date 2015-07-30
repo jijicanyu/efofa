@@ -30,6 +30,13 @@ class ProcessUrlWorker
       #提交下一个队列
       Sidekiq::Client.enqueue(UpdateIndexWorker, host, domain, subdomain, http_info, addlinkhosts, userid)
 
+      if addlinkhosts
+        utf8html = http_info['utf8html']
+        get_linkes(utf8html).each {|h|
+          Sidekiq::Client.enqueue(CheckUrlWorker, h)
+        }
+      end
+
       return 0
     elsif http_info
       Sidekiq::Client.enqueue(HttpErrorWorker, host, domain, subdomain, http_info)
