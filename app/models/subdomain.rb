@@ -86,6 +86,14 @@ class Subdomain
       @client.delete index: @index, type: @type, id: host
     end
 
+    def es_bulk_insert(articles)
+      @client.bulk({
+                                                index: ::Article.__elasticsearch__.index_name,
+                                                type: ::Article.__elasticsearch__.document_type,
+                                                body: prepare_records(articles)
+                                            })
+    end
+
     #插入文档
 
     def es_insert(host, domain, subdomain, r)

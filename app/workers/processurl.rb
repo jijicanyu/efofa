@@ -1,5 +1,5 @@
-require "lrlink.rb"
-require "httpmodule.rb"
+require File.join(FOFA_ROOT_PATH, 'workers', 'lrlink.rb')
+require File.join(FOFA_ROOT_PATH, 'workers', 'httpmodule.rb')
 
 class ProcessUrlWorker
   include Lrlink

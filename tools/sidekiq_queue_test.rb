@@ -10,15 +10,25 @@ require 'sidekiq/fetch'
 require @root_path+"/../app/workers/updateindex.rb"
 require @root_path+"/../app/workers/checkurl.rb"
 include Lrlink
+require 'thread/pool'
 
-fetch = Sidekiq::BasicFetch.new(:queues => ['update_index'])
+pool = Thread.pool(30)
+
+fetch = Sidekiq::BasicFetch.new(:queues => ['update_index', 'check_url'])
 while 1
   work = fetch.retrieve_work
   if work
     msg = Sidekiq.load_json(work.message)
-    args = msg['args']
-    puts "update index task: #{args[0]}, #{msg['class']}"
-    update_index(*args)
+    pool.process(msg){|msg|
+      args = msg['args']
+      if msg['class'] == 'UpdateIndexWorker'
+        puts "update index task: #{args[0]}"
+        update_index(*args)
+      elsif msg['class'] == 'CheckUrlWorker'
+        puts "check url task: #{args[0]}"
+        checkurl(*args)
+      end
+    }
   else
     print '.'
     sleep 1

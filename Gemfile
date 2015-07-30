@@ -56,3 +56,5 @@ gem 'sidekiq'
 gem 'domainatrix' #lrlink
 gem 'guess_html_encoding' #httpmodule
 gem 'sixarm_ruby_magic_number_type' #httpmodule
+
+gem 'thread' #sidekiq_queue_test.rb
