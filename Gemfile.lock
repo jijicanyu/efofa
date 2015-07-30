@@ -189,6 +189,7 @@ GEM
       libv8 (~> 3.16.14.0)
       ref
     thor (0.19.1)
+    thread (0.2.0)
     thread_safe (0.3.5)
     tilt (1.4.1)
     timers (4.0.1)
@@ -238,6 +239,7 @@ DEPENDENCIES
   spring
   sqlite3
   therubyracer
+  thread
   turbolinks
   uglifier (>= 1.3.0)
   unicorn
