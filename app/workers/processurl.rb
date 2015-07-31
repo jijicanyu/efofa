@@ -34,6 +34,9 @@ class ProcessUrlWorker
         utf8html = http_info[:utf8html]
         get_linkes(utf8html).each {|h|
           Sidekiq::Client.enqueue(CheckUrlWorker, h)
+          Sidekiq.redis do |conn|
+            conn.zincrby('checkurl_hosts', 1, host)
+          end
         }
       end
 
