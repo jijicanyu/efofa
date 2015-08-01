@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 if ARGV.size<1
-  puts "Usage : <FILE>"
+  puts "Usage : <FILE> [lineno default 0]"
   exit
 end
 
@@ -10,10 +10,19 @@ end
 require @root_path+"/../config/initializers/sidekiq.rb"
 require @root_path+"/../app/workers/checkurl.rb"
 
+$startline = ARGV[1] || 0
+$startline = $startline.to_i
+$lineno = 0
 File.open(ARGV[0]).each_line{|line|
   host = line.strip
-  print "#{host}                                        \r"
-  CheckUrlWorker.perform_async(host)
+  if $lineno >= $startline
+    CheckUrlWorker.perform_async(host)
+  end
+  $lineno = $lineno + 1
+  if $lineno % 100 ==0
+    `echo #{$lineno} > import_process.txt`
+    print "#{$lineno}                \r"
+  end
 }
 
 
