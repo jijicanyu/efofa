@@ -19,7 +19,7 @@ File.open(ARGV[0]).each_line{|line|
     CheckUrlWorker.perform_async(host)
   end
   $lineno = $lineno + 1
-  if $lineno % 100 ==0
+  if $lineno % 1000 ==0
     `echo #{$lineno} > import_process.txt`
     print "#{$lineno}                \r"
   end
