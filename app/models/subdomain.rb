@@ -115,8 +115,8 @@ class Subdomain
                         header: header,
                         title: title,
                         body: body.force_encoding('UTF-8'),
-                        lastchecktime: r['lastchecktime'] || Time.now().to_s,
-                        lastupdatetime: r['lastupdatetime'] || Time.now().to_s,
+                        lastchecktime: r['lastchecktime'] || Time.now.strftime("%Y-%m-%d %H:%M:%S"),
+                        lastupdatetime: r['lastupdatetime'] || Time.now.strftime("%Y-%m-%d %H:%M:%S"),
                     }, refresh: true
     end
 
@@ -125,7 +125,7 @@ class Subdomain
                      id: host,
                      body: {
                          doc: {
-                             lastchecktime: Time.now().to_s
+                             lastchecktime: Time.now.strftime("%Y-%m-%d %H:%M:%S")
                          }
                      }, refresh: true
     end
