@@ -28,7 +28,8 @@ class ProcessUrlWorker
       return ERROR_BLACK_IP if is_bullshit_ip?(http_info[:ip])
 
       #提交下一个队列
-      Sidekiq::Client.enqueue(UpdateIndexWorker, host, domain, subdomain, http_info, addlinkhosts, userid)
+      mini_info={ip:http_info[:ip], title:http_info[:title], header:http_info[:header], utf8html:http_info[:utf8html]}
+      Sidekiq::Client.enqueue(UpdateIndexWorker, host, domain, subdomain, mini_info, addlinkhosts, userid)
 
       if addlinkhosts
         utf8html = http_info[:utf8html]
