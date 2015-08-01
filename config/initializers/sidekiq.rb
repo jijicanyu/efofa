@@ -5,9 +5,10 @@ rails_root = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + '/../..'
 rails_env = ENV['RAILS_ENV'] || 'development'
 
 config = YAML.load_file(rails_root + '/config/database.yml')[rails_env]['redis']
-redis_url = "redis://:#{config['password']}@#{config['host']}:#{config['port']}/#{config['db']}"
-puts redis_url
-
+redis_url = "redis://#{config['host']}:#{config['port']}/#{config['db']}"
+if config['password']
+  redis_url = "redis://:#{config['password']}@#{config['host']}:#{config['port']}/#{config['db']}"
+end
 Sidekiq::Logging.logger.level = Logger::ERROR
 
 Sidekiq.configure_server do |cfg|
