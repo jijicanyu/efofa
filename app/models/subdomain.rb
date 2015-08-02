@@ -86,12 +86,35 @@ class Subdomain
       @client.delete index: @index, type: @type, id: host
     end
 
-    def es_bulk_insert(articles)
-      @client.bulk({
-                                                index: ::Article.__elasticsearch__.index_name,
-                                                type: ::Article.__elasticsearch__.document_type,
-                                                body: prepare_records(articles)
-                                            })
+    def prepare_records(res)
+      records = []
+      res.each{|r|
+        title = r['title']
+        title ||= ''
+        header = r['header']
+        body = r['utf8html']
+        body ||= ''
+        ip = r['ip']
+        host = r['host']
+        records << { index:  { _index: @index, _type: @type, _id: host, data: {
+                        host: host,
+                        domain: r['domain'],
+                        reverse_domain: r['domain'].reverse,
+                        subdomain: r['subdomain'],
+                        ip: ip,
+                        header: header,
+                        title: title,
+                        body: body.force_encoding('UTF-8'),
+                        lastchecktime: r['lastchecktime'] || Time.now.strftime("%Y-%m-%d %H:%M:%S"),
+                        lastupdatetime: r['lastupdatetime'] || Time.now.strftime("%Y-%m-%d %H:%M:%S"),
+                    } } }
+      }
+      records
+    end
+
+    def es_bulk_insert(res)
+      records = prepare_records(res)
+      @client.bulk body: records, refresh: true
     end
 
     #插入文档
