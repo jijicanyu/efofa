@@ -30,17 +30,17 @@ while 1
       args = msg['args']
       if msg['class'] == 'UpdateIndexWorker'
         update_index(*args){|http_info|
-          bulks << http_info
+          $bulks << http_info
           false
         }
-        bulk_submit if bulks.size>=10
+        bulk_submit if $bulks.size>=10
       elsif msg['class'] == 'CheckUrlWorker'
         puts "check url task: #{args[0]}"
         checkurl(*args)
       end
     }
   else
-    bulk_submit if bulks.size>0 #获取不到新任务就把队列的先提交
+    bulk_submit if $bulks.size>0 #获取不到新任务就把队列的先提交
     print '.'
     sleep 1
   end
