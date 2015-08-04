@@ -13,6 +13,13 @@ include Lrlink
 require 'thread/pool'
 
 pool = Thread.pool(30)
+$bulks = []
+
+def bulk_submit
+  puts "bulk update index task: #{$bulks.map{|h| h['host'] }}"
+  Subdomain.es_bulk_insert($bulks)
+  $bulks.clear
+end
 
 fetch = Sidekiq::BasicFetch.new(:queues => ['update_index', 'check_url'])
 while 1
@@ -22,14 +29,18 @@ while 1
     pool.process(msg){|msg|
       args = msg['args']
       if msg['class'] == 'UpdateIndexWorker'
-        puts "update index task: #{args[0]}"
-        update_index(*args)
+        update_index(*args){|http_info|
+          bulks << http_info
+          false
+        }
+        bulk_submit if bulks.size>=10
       elsif msg['class'] == 'CheckUrlWorker'
         puts "check url task: #{args[0]}"
         checkurl(*args)
       end
     }
   else
+    bulk_submit if bulks.size>0 #获取不到新任务就把队列的先提交
     print '.'
     sleep 1
   end
