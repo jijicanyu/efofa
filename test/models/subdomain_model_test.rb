@@ -79,9 +79,9 @@ class SubdomainModelTest < ActiveSupport::TestCase
     Subdomain.es_insert('1.test.com', 'test.com','', {'title'=>'title1', 'utf8html'=>'body1', 'ip'=>'ip1', 'header'=>'header1'})
     Subdomain.es_insert('2.test.com', 'test.com','', {'title'=>'title1', 'utf8html'=>'body1', 'ip'=>'ip1', 'header'=>'header1'})
     result = Subdomain.search('title:title1')
-    assert_equal(result.total, 2)
+    assert_equal(result.size, 2)
     result = Subdomain.search('title:title2')
-    assert_equal(result.total, 0)
+    assert_equal(result.size, 0)
   end
 
   test '批量操作测试' do
@@ -91,10 +91,10 @@ class SubdomainModelTest < ActiveSupport::TestCase
     Subdomain.es_bulk_insert([
                                  {'title'=>'title1', 'utf8html'=>'body1', 'ip'=>'ip1', 'header'=>'header1', 'host'=>'1.test.com', 'domain'=>'test.com', 'subdomain'=>'1'},
                                  {'title'=>'title1', 'utf8html'=>'body2', 'ip'=>'ip2', 'header'=>'header2', 'host'=>'2.test.com', 'domain'=>'test.com', 'subdomain'=>'2'}
-                             ])
+                             ], true)
     result = Subdomain.search('title:title1')
-    assert_equal(result.total, 2)
+    assert_equal(result.size, 2)
     result = Subdomain.search('title:title2')
-    assert_equal(result.total, 0)
+    assert_equal(result.size, 0)
   end
 end

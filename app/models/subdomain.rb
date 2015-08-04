@@ -99,14 +99,14 @@ class Subdomain < ActiveRecord::Base
       records
     end
 
-    def es_bulk_insert(res)
+    def es_bulk_insert(res, refresh=false)
       records = prepare_records(res)
-      @client.bulk body: records, refresh: true
+      @client.bulk body: records, refresh: refresh
     end
 
     #插入文档
 
-    def es_insert(host, domain, subdomain, r)
+    def es_insert(host, domain, subdomain, r, refresh=false)
       title = r['title']
       title ||= ''
       header = r['header']
@@ -127,17 +127,17 @@ class Subdomain < ActiveRecord::Base
                         body: body.force_encoding('UTF-8'),
                         lastchecktime: r['lastchecktime'] || Time.now.strftime("%Y-%m-%d %H:%M:%S"),
                         lastupdatetime: r['lastupdatetime'] || Time.now.strftime("%Y-%m-%d %H:%M:%S"),
-                    }, refresh: true
+                    }, refresh: refresh
     end
 
-    def update_checktime_of_host(host)
+    def update_checktime_of_host(host, refresh=false)
       @client.update index: @index, type: @type,
                      id: host,
                      body: {
                          doc: {
                              lastchecktime: Time.now.strftime("%Y-%m-%d %H:%M:%S")
                          }
-                     }, refresh: true
+                     }, refresh: refresh
     end
   end
 
