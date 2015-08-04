@@ -1,5 +1,4 @@
-require 'elasticsearch'
-require 'elasticsearch/persistence/model'
+
 
 =begin
 model继承的几个方法：
@@ -13,26 +12,14 @@ search:
     totol 返回的总数，results是返回结果数组
   es_search对应的是返回原始数据，json格式：result['hits']['total']
 =end
-class Subdomain
-  include Elasticsearch::Persistence::Model
+class Subdomain < ActiveRecord::Base
+  include Elasticsearch::Model
 
   index_name 'fofa'
   document_type 'subdomain'
-  @client = Elasticsearch::Persistence.client
+  @client = Elasticsearch::Model.client
   @index = index_name
   @type = document_type
-
-  attribute :id,  Integer
-  attribute :host,  String
-  attribute :title,  String
-  attribute :ip,  String
-  attribute :body,  String
-  attribute :domain,  String
-  attribute :subdomain,  String
-  attribute :reverse_domain,  String
-  attribute :header,  String
-  attribute :lastchecktime, Time
-  attribute :lastupdatetime, Time
 
   class << self
     def index

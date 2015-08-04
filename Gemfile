@@ -44,7 +44,9 @@ group :development, :test do
   gem 'spring'
 end
 
-gem "elasticsearch-persistence", require: 'elasticsearch/persistence/model'
+gem 'will_paginate'
+
+gem "elasticsearch-model", require: 'elasticsearch/model' #一定要放到will_paginate后面，否则分页无效
 
 gem 'colorize' #颜色打印，目前只在rake任务中用到
 
@@ -58,3 +60,4 @@ gem 'guess_html_encoding' #httpmodule
 gem 'sixarm_ruby_magic_number_type' #httpmodule
 
 gem 'thread' #sidekiq_queue_test.rb
+

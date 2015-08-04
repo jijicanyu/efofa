@@ -5,6 +5,5 @@ unless ARGV[0] && ARGV[0].include?('fofa:') #rake任务时就不用初始化了
   config = YAML.load_file(rails_root + '/config/database.yml')[rails_env]['elasticsearch']
   elasticsearch_url = "#{config['host']}:#{config['port']}"
 
-  Elasticsearch::Persistence.client = Elasticsearch::Client.new url:elasticsearch_url, log: (rails_env!='production' && !Sidekiq.server?)
-  #puts Elasticsearch::Persistence.client.count
+  Elasticsearch::Model.client = Elasticsearch::Client.new url:elasticsearch_url, log: (rails_env!='production' && !Sidekiq.server?)
 end

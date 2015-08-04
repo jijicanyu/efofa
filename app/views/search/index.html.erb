@@ -2,10 +2,16 @@
 <p>Find me in app/views/search/index.html.erb</p>
 <%= @count %><br/>
 
+<table>
 <%
 @hosts.each{|h|
 %>
-    <%= h.lastupdatetime %> <%= h.host %>  <%= h.title %></br>
+      <tr>
+        <td><%= h.lastupdatetime  %></td><td><%= h.host %> </td><td> <%= h.title %></td><td> <%= h.ip %></td>
+      </tr>
 <%
 }
 %>
+</table>
+
+<%= will_paginate @hosts,:previous_label=> '上一页',:next_label=> '下一页', :container => false  %>
