@@ -27,20 +27,20 @@ while 1
   work = fetch.retrieve_work
   if work
     msg = Sidekiq.load_json(work.message)
-    pool.process(msg){|msg|
-      args = msg['args']
-      if msg['class'] == 'UpdateIndexWorker'
-        update_index(*args){|http_info|
-          $bulks << http_info
-          false
-        }
-        bulk_submit if $bulks.size>=10
-      elsif msg['class'] == 'CheckUrlWorker'
-        print '.'
-        #puts "check url task: #{args[0]}"
+    args = msg['args']
+    if msg['class'] == 'UpdateIndexWorker'
+      update_index(*args){|http_info|
+        $bulks << http_info
+        false
+      }
+      bulk_submit if $bulks.size>=10
+    elsif msg['class'] == 'CheckUrlWorker'
+      print '.'
+      #puts "check url task: #{args[0]}"
+      pool.process(args){|args|
         checkurl(*args)
-      end
-    }
+      }
+    end
   else
     bulk_submit if $bulks.size>0 #获取不到新任务就把队列的先提交
     print '.'
