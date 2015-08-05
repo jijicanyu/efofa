@@ -2,6 +2,7 @@
 require 'yaml'
 @root_path = File.expand_path(File.dirname(__FILE__))
 require @root_path+"/../config/initializers/sidekiq.rb"
+require 'active_record'
 require 'elasticsearch'
 require 'elasticsearch/model'
 require @root_path+"/../config/initializers/elasticsearch.rb"
