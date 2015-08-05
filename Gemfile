@@ -61,3 +61,5 @@ gem 'sixarm_ruby_magic_number_type' #httpmodule
 
 gem 'thread' #sidekiq_queue_test.rb
 
+gem 'parslet'
+
