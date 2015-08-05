@@ -3,7 +3,7 @@ require 'yaml'
 @root_path = File.expand_path(File.dirname(__FILE__))
 require @root_path+"/../config/initializers/sidekiq.rb"
 require 'elasticsearch'
-require 'elasticsearch/persistence'
+require 'elasticsearch/model'
 require @root_path+"/../config/initializers/elasticsearch.rb"
 require 'celluloid'
 require 'sidekiq/fetch'
