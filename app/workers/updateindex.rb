@@ -4,7 +4,7 @@ require File.join(FOFA_ROOT_PATH, 'models', 'subdomain.rb')
 
 def update_index(host, domain, subdomain, http_info, addlinkhosts, userid=0)
   #puts http_info
-  FofaDB.changecount(host,domain,http_info['ip']) unless Subdomain.exists?(host) #更新计数，用于加黑
+  FofaDB.changecount(host,domain,http_info['ip']) unless Subdomain.es_exists?(host) #更新计数，用于加黑
   need_insert = true
   need_insert = yield(http_info) if block_given?
   if need_insert
