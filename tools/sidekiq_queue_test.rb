@@ -35,7 +35,8 @@ while 1
         }
         bulk_submit if $bulks.size>=10
       elsif msg['class'] == 'CheckUrlWorker'
-        puts "check url task: #{args[0]}"
+        print '.'
+        #puts "check url task: #{args[0]}"
         checkurl(*args)
       end
     }
