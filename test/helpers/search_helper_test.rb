@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'search_helper'
 
-class SubdomainModelTest < ActiveSupport::TestCase
+class SearchHelperTest < ActiveSupport::TestCase
   include SearchHelper
   test "ElasticProcessor测试" do
     assert_equal "domain:(*360.cn*)", ElasticProcessor.parse('domain="360.cn"')

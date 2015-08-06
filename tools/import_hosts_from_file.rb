@@ -7,7 +7,10 @@ end
 
 @root_path = File.expand_path(File.dirname(__FILE__))
 #puts @root_path
+require 'active_record'
+require 'elasticsearch/model'
 require @root_path+"/../config/initializers/sidekiq.rb"
+require @root_path+"/../config/initializers/elasticsearch.rb"
 require @root_path+"/../app/workers/checkurl.rb"
 
 $startline = ARGV[1] || 0
