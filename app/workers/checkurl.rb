@@ -69,7 +69,7 @@ def checkurl(host, force=false, addlinkhosts=true, userid=0)
   end
 
   #更新检查时间
-  FofaES.update_checktime_of_host(host) if exists_host
+  Subdomain.update_checktime_of_host(host) if exists_host
 
   #return 1 if @@just_for_test #测试桩，在rspec中用到，并不实际提交到Sidekiq
 
